@@ -6,6 +6,7 @@
 .section .text
 # power(n, m) -> n ^ m (m >= 0)
 .globl power
+.type power, @function
 power:
 pushl %ebp
 movl %esp, %ebp
@@ -33,9 +34,10 @@ ret
 
 .globl _start
 _start:
+
+# calculate 2 ^ 7
 pushl $7
 pushl $2
-# calculate 2 ^ 7
 call power
 # pop arguments off stack
 addl $0x8, %esp
@@ -46,6 +48,35 @@ pushl $2
 pushl $.Lformatstr
 call printf
 addl $0x10, %esp
+
+# calculate (-4 ^ 3)
+pushl $3
+pushl $-4
+call power
+# pop arguments off stack
+addl $0x8, %esp
+# call printf
+pushl %eax
+pushl $3
+pushl $-4
+pushl $.Lformatstr
+call printf
+addl $0x10, %esp
+
+# calculate 3 ^ 0
+pushl $0
+pushl $3
+call power
+# pop arguments off stack
+addl $0x8, %esp
+# call printf
+pushl %eax
+pushl $0
+pushl $3
+pushl $.Lformatstr
+call printf
+addl $0x10, %esp
+
 # exit
 movl $1, %eax
 xor %ebx, %ebx
