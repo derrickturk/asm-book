@@ -1,4 +1,7 @@
 # power function, following platform ABI
+.section .data
+.Lformatstr:
+.asciz "%d ^ %d = %d\n"
 
 .section .text
 # power(n, m) -> n ^ m (m >= 0)
@@ -36,9 +39,16 @@ pushl $2
 call power
 # pop arguments off stack
 addl $0x8, %esp
+# call printf
+pushl %eax
+pushl $7
+pushl $2
+pushl $.Lformatstr
+call printf
+addl $0x10, %esp
 # exit
-movl %eax, %ebx
 movl $1, %eax
+xor %ebx, %ebx
 pushl $0 # bogus return address
 pushl %ecx
 pushl %edx
